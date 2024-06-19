@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@700&display=swap');
+
+        body {
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: bold;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 200px;
+            background-color: #181818;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #181818;
+            border-bottom: 1px solid #575757;
+            position: fixed;
+            top: 0;
+            left: 200px;
+            right: 0;
+            z-index: 1;
+            transition: left 0.3s ease;
+        }
+        .header input[type="text"] {
+            padding: 5px;
+            width: 200px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: bold;
+        }
+        .header img {
+            height: 40px;
+            border-radius: 50%;
+        }
+        .main-content {
+            margin-top: 60px;
+            margin-left: 200px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .album {
+            text-align: center;
+        }
+        .album img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .album-title {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #ffffff;
+        }
+        .artist {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 2px 0;
+            background-color: #ffffff;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .header {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#">Home</a>
+        <a href="#">Browse</a>
+        <a href="#">Radio</a>
+        <a href="#">Recently Added</a>
+        <a href="#">Artists</a>
+        <a href="#">Albums</a>
+        <a href="#">Songs</a>
+        <a href="#">Made for You</a>
+        <a href="#">All Playlists</a>
+        <a href="#">Favorite Songs</a>
+        <a href="#">TikTok Songs</a>
+    </div>
+    <div class="header">
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <input type="text" placeholder="Search">
+        <img src="https://via.placeholder.com/40" alt="User Avatar">
+    </div>
+    <div class="main-content">
+        <div class="albums-grid"></div>
+    </div>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const albums = [
+                {title: "After Hours", artist: "The Weeknd", image: "https://th.bing.com/th/id/OIP.rnzuSMZGnHXJO6h7d2BG5AHaHa?rs=1&pid=ImgDetMain"},
+                {title: "Did you know...", artist: "Lana Del Rey", image: "https://th.bing.com/th/id/OIP.lMj98OQUreA36jLwUOe6OAAAAA?rs=1&pid=ImgDetMain"},
+                {title: "EASY - EP", artist: "LE SSERAFIM", image: "https://th.bing.com/th/id/OIP.6EhnZVexTPdavaOX3TSujgAAAA?rs=1&pid=ImgDetMain"},
+                {title: "Espresso - Single", artist: "Sabrina Carpenter", image: "https://www.cuindependent.com/new/wp-content/uploads/2024/06/Sabrina-Carpenter-Espresso.webp"},
+                {title: "eternal sunshine", artist: "Ariana Grande", image: "https://th.bing.com/th/id/OIP.5yNmfsOc8KqJnS1TF40wZAHaHT?rs=1&pid=ImgDetMain", audio: "https://youtu.be/dS_HLHozs1E?si=qMidmtTwIsh94xHU"},
+                {title: "Flying Solo", artist: "Pamungkas", image: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/02/86/e3/0286e38b-ceee-5ed6-89a0-ca497dcc2257/cover.jpg/296x296bf.webp"},
+                {title: "folklore (deluxe version)", artist: "Taylor Swift", image: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/80/dc/b580dca0-349d-036b-e09b-bd849f6affd8/20UMGIM64216.rgb.jpg/296x296bf.webp"},
+                {title: "For All The Dogs", artist: "Drake", image: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/21/50/ee/2150ee84-62c3-4190-7dfa-da30abd98ac8/23UM1IM09862.rgb.jpg/296x296bf.webp"},
+                {title: "FOUR (The Ultimate Edition)", artist: "One Direction", image: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/14/e4/98/14e49846-57a9-dc8d-6fa3-5e03ccf3606c/dj.ljogvxod.jpg/296x296bf.webp"},
+                {title: "Good Days - Single", artist: "SZA", image: "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/74/13/a5/7413a504-1957-284b-232e-280d14956249/Job8837ae44-3b0c-4b03-ac79-f450e1619e70-140350222-PreviewImage_preview_image_nonvideo_sdr-Time1670432134632.png/296x296bb.webp"}
+            ];
+
+            const albumsGrid = document.querySelector(".albums-grid");
+            albums.forEach(album => {
+                if (album.image) { // Ensure only albums with images are added
+                    const albumDiv = document.createElement("div");
+                    albumDiv.classList.add("album");
+                    albumDiv.innerHTML = `
+                        <img src="${album.image}" alt="${album.title}">
+                        <div class="album-title">${album.title}<br><span class="artist">${album.artist}</span></div>
+                    `;
+                    albumsGrid.appendChild(albumDiv);
+
+                    if (album.title === "eternal sunshine") {
+                        albumDiv.addEventListener("click", function() {
+                            window.open(album.audio, "_blank");
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
